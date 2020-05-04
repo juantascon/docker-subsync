@@ -1,20 +1,13 @@
 FROM ubuntu:bionic
 
-RUN apt-get update && \
-  apt-get install -y --no-install-recommends \
-  build-essential \
-  python3 \
-  python3-dev \
-  python3-pip && \
-  rm -rf /var/lib/apt/lists/*
-  
-RUN pip3 install --upgrade pip setuptools && \
-  ln -s -f pip3 /usr/bin/pip && \
-  ln -s -f /usr/bin/python3 /usr/bin/python && \
-  rm -r /root/.cache
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends build-essential python3 python3-dev python3-pip ffmpeg
 
-RUN pip install --no-cache-dir -r https://raw.githubusercontent.com/smacke/subsync/master/requirements.txt
-RUN pip install --no-cache-dir https://github.com/smacke/subsync/zipball/master
+RUN pip3 install --upgrade pip setuptools
+RUN pip3 install --no-cache-dir -r https://raw.githubusercontent.com/smacke/subsync/master/requirements.txt
+RUN pip3 install --no-cache-dir https://github.com/smacke/subsync/zipball/master
+
+RUN rm -r /root/.cache /var/lib/apt/lists/*
 
 ENTRYPOINT ["subsync"]
 CMD ["--help"]
